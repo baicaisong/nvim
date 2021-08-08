@@ -21,7 +21,7 @@ set smartcase
 " 保持在光标上下最少行数5
 set scrolloff=5
 " 手工定义折叠 
-set fdm=manual
+" set fdm=manual
 " 开启真彩色
 set termguicolors
 " 鼠标
@@ -30,6 +30,10 @@ set mouse=a
 set clipboard=unnamed,unnamedplus
 " 禁用交换文件
 set noswapfile
+" 自动定位上次编辑位置
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" 换行icon
+let &showbreak=" ↪  "
 
 
 " set leader
@@ -58,7 +62,7 @@ Plug 'tpope/vim-surround'
 Plug 'gcmt/wildfire.vim'
 Plug 'chaoren/vim-wordmotion'
 Plug 'alvan/vim-closetag'
-Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'luochen1990/rainbow'
 Plug 'arthurxavierx/vim-caser'
 Plug 'nvim-lua/plenary.nvim'
@@ -68,7 +72,38 @@ Plug 'tpope/vim-obsession' | Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-repeat'
 Plug 'wellle/targets.vim'
 Plug 'f-person/git-blame.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+"=== vim查看启动速度 使用命令StartupTime
+Plug 'dstein64/vim-startuptime',{'on':'StartupTime'}
+Plug 'junegunn/vim-easy-align',{'for':'python'}
+Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
 call plug#end()
+
+
+lua <<EOF
+require("indent_blankline").setup {
+    char = "|",
+    buftype_exclude = {"terminal"}
+}
+EOF
+
+
+" treesitter
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+    disable = {"tsx"}
+  },
+  ensure_installed = {
+    "graphql"
+  },
+}
+EOF
 
 
 " theme
@@ -88,12 +123,19 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " 预览窗口展示
 lua << EOF
+local actions = require('telescope.actions')
+
 require('telescope').setup{
   defaults = {
+    mappings ={
+      i={
+       ["<esc>"] = actions.close	
+      }
+    },
     layout_config = {
       horizontal = {
 	preview_cutoff = 100,
-	preview_width = 50
+	preview_width = 0.5
       },
     },
   }
@@ -178,10 +220,6 @@ nnoremap tr :CocCommand translator.popup<CR>
 " close tsg
 let g:closetag_filenames = '*.html,*.tsx'
 
-" indent
-let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
-let g:indent_guides_start_level           = 2  " 从第二层开始可视化显示缩进
-
 
 " rainbow
 let g:rainbow_active = 1
@@ -197,3 +235,7 @@ let g:wordmotion_prefix = '<leader>'
 " explorer
 :nnoremap <c-e> :CocCommand explorer<CR>
 
+
+
+" status line
+source ~/.config/nvim/status.vim
