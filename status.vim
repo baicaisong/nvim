@@ -216,6 +216,14 @@ section.right[11] = {
     separator_highlight = {nord_colors.bg, nord_colors.bg}
   }
 }
+section.right[12] = {
+  FirstElement = {
+    provider = function()
+      return "  "
+    end,
+    highlight = {nord_colors.blue, nord_colors.line_bg}
+  }
+}
 
 section.short_line_left[1] = {
   BufferType = {
