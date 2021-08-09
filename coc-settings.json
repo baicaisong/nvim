@@ -59,10 +59,7 @@
   "list.previewHighlightGroup": "Statement",
   "list.nextKeymap": "<C-e>",
   "list.previousKeymap": "<C-u>",
-  "snippets.ultisnips.directories": [
-    "$HOME/.config/nvim/Ultisnips/",
-    "$HOME/.config/nvim/plugged/vim-snippets/UltiSnips/"
-  ],
+  "snippets.ultisnips.directories": ["$HOME/.config/nvim/Ultisnips/"],
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
@@ -75,7 +72,8 @@
     "scss",
     "json",
     "vue",
-    "svelte"
+    "svelte",
+    "graphql"
   ],
   "signature.target": "float",
   "typescript.suggestionActions.enabled": false,
@@ -101,6 +99,7 @@
     "h": "toggleSelection",
     "<tab>": "actionMenu",
     "o": ["wait", "expandable?", "cd", "open"],
+    "<cr>": ["wait", "expandable?", "cd", "open"],
     "e": ["wait", "expanded?", "collapse", "expand"],
     "l": "gotoParent",
     "yp": "copyFilepath",
@@ -118,11 +117,17 @@
     "X": "systemExecute"
   },
   "html.format.enable": true,
-  "javascript.referencesCodeLens.enable": true,
   "javascript.showUnused": true,
   "javascript.suggest.names": true,
   "javascript.suggestionActions.enabled": true,
   "json.format.enable": true,
   "prettier.trailingComma": "all",
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "languageserver": {
+    "graphql": {
+      "command": "graphql-lsp",
+      "args": ["server", "-m", "stream"],
+      "filetypes": ["typescript", "typescriptreact", "graphql"]
+    }
+  }
 }
