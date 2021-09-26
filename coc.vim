@@ -1,4 +1,4 @@
-let g:coc_global_extensions = ['coc-json','coc-python','coc-tsserver','coc-vimlsp','coc-html','coc-css','coc-snippets','coc-explorer','coc-prettier','coc-translator']
+let g:coc_global_extensions = ['coc-json','coc-pyright','coc-tsserver','coc-vimlsp','coc-html','coc-css','coc-snippets','coc-explorer','coc-prettier','coc-translator']
 
 set updatetime=100
 set shortmess+=c
@@ -33,7 +33,7 @@ nmap <silent> gr <Plug>(coc-references)
 
 
 " 定义查看
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> <leader>k :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')

@@ -1,4 +1,5 @@
 
+# 公共
 snippet rt "react template" b
 export type $1Props = {
 }
@@ -7,4 +8,264 @@ return (
 <div>$1</div>
 )
 }
+endsnippet
+
+
+snippet en "entry template" b
+import {Entry} from '@frontend/ui'
+
+export const $1Entry: Entry = {
+component: Page,
+path: '/$1',
+label: '$2',
+//permissionKey: ['main:menu:user'],
+}
+function Page(){
+return <div>$1</div>
+}
+endsnippet
+
+
+#table相关
+snippet ta "table template" b
+import {
+Table,
+TableDataQuery,
+tableDataQueryFromQuery,
+useTableData
+} from 'src/frontend/table'
+import {
+TextField,
+} from '@frontend/ui'
+import {ErpVisitListQuery,ErpVisitListFilter,erpWarehouseUserListQuery} from 'src/generated/apollo'
+import { useRecoilValue } from 'recoil'
+import { currentCompanyState } from 'src/store/company'
+
+
+type Shape = ShapeFromQuery<ErpVisitListQuery>
+type Filter = ErpVisitListFilter
+
+const company = useRecoilValue(currentCompanyState)
+const tableData = useTableData(erpWarehouseUserListQuery, {
+company,
+})
+
+<Table<Shape, Filter>
+rowKey="id"
+columns={(refetch) => [$1]}
+tableData={tableData}
+filter={
+<TextField
+name="search"
+placeholder="$2"
+css={`
+width: 220px;
+`}
+/>
+}
+/>
+endsnippet
+
+
+# columns相关
+snippet ci "column index" b
+{
+name: 'index',
+label: '序号',
+},
+endsnippet
+
+snippet cb "column base" b
+{
+name:$1,
+label:''
+},
+endsnippet
+
+
+
+snippet ca "column action" b
+import {
+CardWrapper,
+Chip,
+DeleteIcon,
+EditIcon,
+Entry,
+Flex,
+} from '@frontend/ui'
+
+{
+name: 'actions',
+label: '操作',
+render: (_, record) => (
+<>
+<EditIcon onClick={() => {}} />
+<DeleteIcon onClick={() => {}} />
+</>
+),
+},
+endsnippet
+
+
+
+snippet crt "column render timestamp" b
+import { formatTimestamp } from '@frontend/utils'
+
+render: (v: Maybe<number>) =>
+v?formatTimestamp(v, 'yyyy/MM/dd HH:mm:ss$1'):'-',
+endsnippet
+
+
+# mutation相关
+snippet md "mutation delete" b
+import {
+useAlert,
+useConfirm,
+DeleteIcon,
+} from '@frontend/ui'
+
+export function DeleteUser({
+  refetch,
+  id,
+}: {
+  refetch: () => void
+  id: string
+}) {
+  const [deleteUser] = useDeleteErpWarehouseUserMutation()
+  const alert = useAlert()
+  const confirm = useConfirm()
+
+  return (
+    <DeleteIcon
+      onClick={async () => {
+        const confirmed = await confirm({
+          title: '确定要删除该仓库用户吗?',
+          content: '该操作不可撤销',
+          confirmLabel: '删除',
+          cancelLabel: '取消',
+          size: 'small',
+        })
+        if (!confirmed) return
+
+        const { data: success } = await deleteUser({
+          variables: {
+            id: [id],
+          },
+        })
+
+        if (!success) {
+          return
+        }
+
+        alert.show({
+          severity: 'success',
+          content: '删除成功',
+        })
+        refetch()
+      }}
+    />
+  )
+}endsnippet
+
+
+
+snippet mu "mutation update" b
+import {
+useAlert,
+FormDialog,
+FieldsConfig
+} from '@frontend/ui'
+
+type Shape = ShapeFromQuery<ErpWarehouseUserListQuery>
+
+const useFields: () => FieldsConfig<Shape> = () => {
+  return [$2]
+}
+
+export function UpdateUser({ refetch,initialValues }: { refetch: () => void;  initialValues: Shape}) {
+  const [updateUper] =$1 useUpdateErpWarehouseUserMutation()
+  const alert = useAlert()
+  const fields = useFields()
+
+
+  return (
+    <FormDialog
+          title=""
+	  initialValues={initialValues}
+      onSubmit={async (values: any) => {
+        const { data: success } = await updateUper({
+          variables: {
+            input: values,
+          },
+        })
+
+        if (!success) {
+          return
+        }
+
+        alert.show({
+          severity: 'success',
+          content: '编辑成功',
+        })
+        refetch()
+      }}
+      trigger={<EditIcon />}
+      fields={fields}
+    />
+  )
+}
+endsnippet
+
+
+
+snippet fb "fields base" b
+{
+name:$1,
+field:$2,
+label: '',
+},
+
+endsnippet
+
+snippet cd "confirm dialog" b
+import { Button, useAlert, useConfirm } from '@frontend/ui'
+
+export function CancelVisit({ onSubmitted }: { onSubmitted?(): void }) {
+const confirm = useConfirm()
+const alert = useAlert()
+const [mutate] = $1()
+
+return (
+<Button
+size="small"
+color="secondary"
+onClick={async () => {
+const confirmed = await confirm({
+title: '',
+content: '',
+size: 'small',
+})
+if (!confirmed) return
+const { data } = await mutate({
+variables: {$2},
+})
+if (!data) return
+alert.show({
+severity: 'success',
+content: '',
+})
+onSubmitted?.()
+}}
+>
+取消
+</Button>
+)
+}
+endsnippet
+
+
+snippet com "company recoil" b
+import { currentCompanyState } from 'src/store/company'
+import { useRecoilValue } from 'recoil'
+const company = useRecoilValue(currentCompanyState)
 endsnippet

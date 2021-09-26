@@ -71,9 +71,8 @@
     "css",
     "scss",
     "json",
-    "vue",
-    "svelte",
-    "graphql"
+    "graphql",
+    "python"
   ],
   "signature.target": "float",
   "typescript.suggestionActions.enabled": false,
@@ -116,13 +115,9 @@
     "q": "quit",
     "X": "systemExecute"
   },
-  "html.format.enable": true,
-  "javascript.showUnused": true,
-  "javascript.suggest.names": true,
-  "javascript.suggestionActions.enabled": true,
-  "json.format.enable": true,
   "prettier.trailingComma": "all",
   "prettier.singleQuote": true,
+  "prettier.semi": false,
   "languageserver": {
     "graphql": {
       "command": "graphql-lsp",
