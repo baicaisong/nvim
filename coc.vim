@@ -1,4 +1,4 @@
-let g:coc_global_extensions = ['coc-json','coc-pyright','coc-tsserver','coc-vimlsp','coc-html','coc-css','coc-snippets','coc-explorer','coc-prettier','coc-translator']
+let g:coc_global_extensions = ['coc-pyright','coc-json','coc-tsserver','coc-vimlsp','coc-html','coc-snippets','coc-explorer','coc-prettier','coc-translator']
 
 set updatetime=100
 set shortmess+=c
@@ -24,8 +24,8 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " 代码报错跳转
-nmap <silent> <leader>- <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>+ <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>[ <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>] <Plug>(coc-diagnostic-next)
 
 " 定义跳转
 nmap <silent> gd <Plug>(coc-definition)
@@ -69,5 +69,6 @@ nnoremap <space>e :CocCommand explorer<CR>
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " coc-translator
-nnoremap tr :CocCommand translator.popup<CR>
+nmap <Leader>tr <Plug>(coc-translator-p)
+vmap <Leader>tr <Plug>(coc-translator-pv)
 

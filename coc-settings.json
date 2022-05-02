@@ -1,12 +1,8 @@
 {
-  "snippets.ultisnips.usePythonx": false,
-  "coc.preferences.semanticTokensHighlights": false,
   "coc.preferences.enableFloatHighlight": true,
   "coc.preferences.snippetStatusText": "Ⓢ ",
   "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.messageLevel": "error",
-  "coc.source.around.firstMatch": false,
-  "coc.source.buffer.firstMatch": false,
   "suggest.detailMaxLength": 60,
   "suggest.noselect": true,
   "suggest.enablePreselect": false,
@@ -17,8 +13,7 @@
   "suggest.floatEnable": true,
   "suggest.detailField": "preview",
   "suggest.snippetIndicator": "",
-  "suggest.triggerCompletionWait": 100,
-  "suggest.echodocSupport": true,
+  "suggest.triggerCompletionWait": 50,
   "suggest.completionItemKindLabels": {
     "class": "\uf0e8",
     "color": "\ue22b",
@@ -123,6 +118,12 @@
       "command": "graphql-lsp",
       "args": ["server", "-m", "stream"],
       "filetypes": ["typescript", "typescriptreact", "graphql"]
+    },
+    "go": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "trace.server": "verbose",
+      "filetypes": ["go"]
     }
   }
 }
