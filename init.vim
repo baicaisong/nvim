@@ -1,11 +1,5 @@
 " 不与Vi 兼容
 set nocompatible
-" 语法高亮
-syntax on
-" 显示行号
-set number
-" 显示相对行号
-set relativenumber
 " 换行
 set wrap
 " 不在单词内部换行
@@ -20,8 +14,6 @@ set ignorecase
 set smartcase
 " 保持在光标上下最少行数5
 set scrolloff=5
-" 开启真彩色
-set termguicolors
 " 鼠标
 set mouse=a
 " 剪贴板
@@ -30,16 +22,18 @@ set clipboard=unnamed,unnamedplus
 set noswapfile
 " 自动定位上次编辑位置
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-" 换行icon
-let &showbreak=" ↪  "
-set tabstop=2
+
+
+
+" 基本配置
+lua require('init')
+" 插件
+lua require('plugins')
 
 
 " set leader
 let mapleader=" "
 nmap <leader>s :w<CR>
-"nmap <leader>q :q<CR>
-nmap <leader>qa :qa<CR>
 
 
 
@@ -49,7 +43,6 @@ Plug 'lbrayner/vim-rzip'
 Plug 'rmagatti/alternate-toggler'
 Plug 'justinmk/vim-sneak'
 Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'numToStr/Comment.nvim'
@@ -62,55 +55,25 @@ Plug 'chaoren/vim-wordmotion'
 Plug 'alvan/vim-closetag'
 Plug 'luochen1990/rainbow'
 Plug 'arthurxavierx/vim-caser'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'tpope/vim-obsession' | Plug 'dhruvasagar/vim-prosession'
 Plug 'tpope/vim-repeat'
 Plug 'wellle/targets.vim'
 Plug 'f-person/git-blame.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
 Plug 'neoclide/jsonc.vim'
 call plug#end()
 
 
+" status line
+source ~/.config/nvim/status.vim
+" coc
+source ~/.config/nvim/coc.vim
 
-lua require('Comment').setup()
-
-
-" treesitter
+" treesitter - fold
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-    disable = {"tsx"}
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = '<CR>',
-      node_incremental = '<CR>',
-      node_decremental = '<BS>',
-      scope_incremental = '<TAB>',
-    }
-  },
-  ensure_installed = {
-    "graphql",
-		"typescript",
-		"python",
-		"javascript",
-		"jsonc",
-		"go"
-  },
-	indent = {
-    enable = true
-  }
-}
-EOF
 
 
 " theme
@@ -124,31 +87,9 @@ let g:sneak#label = 1
 
 
 " telescope
-nnoremap <leader>ff <cmd>Telescope find_files  hidden=true<cr>
+" " Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-" 预览窗口展示
-lua << EOF
-local actions = require('telescope.actions')
-
-require('telescope').setup{
-  defaults = {
-    file_ignore_patterns = { '.git/.*' },
-    mappings ={
-      i={
-       ["<esc>"] = actions.close	
-      }
-    },
-    layout_config = {
-      horizontal = {
-	preview_cutoff = 100,
-	preview_width = 0.5
-      },
-    },
-  }
-}
-EOF
 
 
 
@@ -169,12 +110,6 @@ let g:wordmotion_prefix = '<leader>'
 :nnoremap <c-e> :CocCommand explorer<CR>
 
 
-
-" status line
-source ~/.config/nvim/status.vim
-
-" coc
-source ~/.config/nvim/coc.vim
 
 " toggle false/true
 nnoremap <leader>ta :ToggleAlternate<CR>
